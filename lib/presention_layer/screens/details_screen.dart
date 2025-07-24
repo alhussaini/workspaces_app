@@ -171,7 +171,7 @@ class RoomCard extends StatelessWidget {
             ),
             SubmitButton(
                 press: () {
-                  context.goNamed( MyStrings.bookingScreen,
+                  context.pushNamed( MyStrings.bookingScreen,
                     extra: {
                         'roomId': roomId,
                         'workspaceId':
