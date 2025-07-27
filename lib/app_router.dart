@@ -28,6 +28,7 @@ import 'package:workspace/data_layer/web_servives/regestration_services/login_se
 import 'package:workspace/data_layer/web_servives/regestration_services/sigin_up_service.dart';
 import 'package:workspace/data_layer/web_servives/user_profile_services/get_user_profile_data.dart';
 import 'package:workspace/data_layer/web_servives/workspace_services/get_workspaces_data_service.dart';
+import 'package:workspace/helpers/dio_helper.dart';
 
 // Screens
 import 'package:workspace/presention_layer/screens/book_screens/inforamtions_book_screen.dart';
@@ -60,15 +61,16 @@ class AppRouter {
   }
 
   void _initRepos() {
-    loginRepo = LoginRepo(loginService: LoginService());
+    final dioHelper = DioHelper();
+    loginRepo = LoginRepo(loginService: LoginService(dioHelper: dioHelper));
     siginUpRepo = SiginUpRepo(siginUpService: SiginUpService());
     workSpacesRepo =
-        WorkSpacesRepo(getWorkspacesDataService: GetWorkspacesDataService());
+        WorkSpacesRepo(getWorkspacesDataService: GetWorkspacesDataService(dioHelper: dioHelper));
     tokenRepo = TokenRepo(getTokenService: GetTokenService());
     paymentRequestRepo =
         PaymentRequestRepo(paymentRequestService: PaymentRequestService());
     userProfileRepo = UserProfileRepo(
-      getUserProfileDataService: GetUserProfileDataService(MyStrings.token),
+      getUserProfileDataService: GetUserProfileDataService(dioHelper: dioHelper),
     );
   }
 
@@ -144,7 +146,7 @@ class AppRouter {
               workspaceId: workspaceId,
               isCalender: isCalender,
               bookingRepo:
-                  BookingRepo(BookRequestService(token: MyStrings.token)),
+                  BookingRepo(BookRequestService(token: "")),// temp
             ),
             child: const InforamtionsBookScreen(),
           );

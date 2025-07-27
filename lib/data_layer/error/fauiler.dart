@@ -22,7 +22,6 @@ class ServerFailure extends Failure {
 
       case DioExceptionType.receiveTimeout:
         return ServerFailure('Receive timeout with ApiServer');
-//الصوت مش هيكون مسموع / عايز ايه معاك يخويا ؟؟؟ status code بيرجع لما بكتبه غلط انما لو صح بيبثي نل
       case DioExceptionType.badResponse:
         return ServerFailure.fromResponse(
           dioError.response!.statusCode,

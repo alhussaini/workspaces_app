@@ -1,20 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:workspace/constants/my_strings.dart';
+import 'package:workspace/helpers/dio_helper.dart';
 
 class LoginService {
-   late Dio dio;
-  LoginService() {
-    BaseOptions options = BaseOptions(
-        baseUrl: MyStrings.baseUrl1,
-        receiveDataWhenStatusError: true,
-        connectTimeout: Duration(seconds: 60),
-        receiveTimeout: Duration(seconds: 60),
-        headers: {
-          'User-Agent': 'Dart',
-          'Content-Type': 'application/json',
-        }); 
-    dio = Dio(options);
-  }
+  final DioHelper dioHelper;
+  LoginService({required this.dioHelper});
+  // LoginService() {
+  //   BaseOptions options = BaseOptions(
+  //       baseUrl: MyStrings.baseUrl1,
+  //       receiveDataWhenStatusError: true,
+  //       connectTimeout: Duration(seconds: 60),
+  //       receiveTimeout: Duration(seconds: 60),
+  //       headers: {
+  //         'User-Agent': 'Dart',
+  //         'Content-Type': 'application/json',
+  //       });
+  //   dio = Dio(options);
+  // }
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       Map<String, dynamic> requestBody = {
@@ -24,10 +26,17 @@ class LoginService {
 
       print("Attempting login with email: $email");
       print("Login endpoint: ${MyStrings.baseUrl1}login");
+      final options = RequestOptions(
+        method: "POST",
+        path: "login",
+         extra: {
+          'baseUrl': MyStrings.baseUrl1,
+        },
+      data: requestBody,
+      );
 
-      Response response = await dio.post('login', data: requestBody);
+      Response response = await dioHelper.dio.fetch(options);
       print("Response status code: ${response.statusCode}");
-      // print("Response headers: ${response.headers}");
       print("Response data: ${response.data}");
 
       return response.data;
@@ -36,11 +45,9 @@ class LoginService {
         print("DioError type: ${e.type}");
         print("DioError message: ${e.message}");
         print("DioError response: ${e.response?.data}");
-        print(
-            "DioError status code: ${e.response?.statusCode}"); 
+        print("DioError status code: ${e.response?.statusCode}");
       }
       rethrow;
     }
   }
 }
- 

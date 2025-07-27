@@ -1,25 +1,23 @@
 import 'package:dio/dio.dart';
 import 'package:workspace/constants/my_strings.dart';
+import 'package:workspace/helpers/dio_helper.dart';
 
 class GetWorkspacesDataService {
-  late Dio dio;
-  GetWorkspacesDataService() {
-    BaseOptions options = BaseOptions(
-      baseUrl: MyStrings.baseUrl2,
-      receiveDataWhenStatusError: true,
-    );
-    dio = Dio(options);
-  }
+  final DioHelper dioHelper;
+
+  GetWorkspacesDataService({required this.dioHelper});
   Future<Map<String, dynamic>> getWorkspacesData() async {
     try {
-      Response response = await dio.get(
-        'workspace-data',
-        // queryParameters: {
-        //   'clear_cache': true,
-        // },
+      final options = RequestOptions(
+        method: "GET",
+        path: "workspace-data",
+        extra: {
+          'requiresAuth':true,
+          'baseUrl': MyStrings.baseUrl2,
+        },
       );
-      print("Response status code: ${response.statusCode}");
-      // print("Response data: ${response.data}");
+      Response response = await dioHelper.dio.fetch(options);
+      print("Response status code from getWorkspacesData service: ${response.statusCode}");
 
       return response.data;
     } catch (e) {

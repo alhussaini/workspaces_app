@@ -1,7 +1,6 @@
 class MyStrings {
   static final String cairoFont = 'Cairo';
   static final String poppinsFont = 'Poppins';
-  static String token = "";
   static String baseUrl1 =
       "https://test.flexispace.space/wp-json/custom-auth/v1/";
   static String baseUrl2 = "https://test.flexispace.space/wp-json/zenzone/v1/";

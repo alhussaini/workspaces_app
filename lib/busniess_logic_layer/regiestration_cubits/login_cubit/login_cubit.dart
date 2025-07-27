@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:workspace/constants/my_strings.dart';
+import 'package:workspace/data_layer/models/secure_storage.dart';
 import 'package:workspace/data_layer/reopstries/regestration_repo/login_repo.dart';
 
 part 'login_state.dart';
@@ -24,8 +24,8 @@ class LoginCubit extends Cubit<LoginState> {
       if (isClosed) return; // Check again after async operation
 
       result.fold((fauiler) => emit(LoginFauiled(error: fauiler.errorMessage)),
-          (success) {
-        MyStrings.token = success.loginData.token;
+          (success) async{
+        await SecureStorage.setAccessToken(success.loginData.token);
         emit(LoginSuccess());
       });
     } catch (e) {
